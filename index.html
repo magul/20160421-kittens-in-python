@@ -109,6 +109,97 @@
 						<li class="fragment"><a href="https://www.python.org/dev/peps/pep-3333/">PEP 3333</a></li>
 					</ul>
 				</section>
+
+				<section>
+					<h2>WSGI</h2>
+					<p>
+						The WSGI interface has two sides: the "server" or "gateway" side, and the "application" or "framework" side. The server side invokes a callable object that is provided by the application side.
+					</p>
+				</section>
+
+				<section>
+					<h2>Najprostsza aplikacja WSGI</h2>
+					<pre><code class="hljs" data-trim contenteditable>
+def simple_app(environ, start_response):
+    """Simplest possible application object"""
+    status = '200 OK'
+    response_headers = [('Content-type', 'text/plain')]
+    start_response(status, response_headers)
+    return ['Hello world!\n']
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>environ</h2>
+					<ul>
+						<li class="fragment">koniecznie słownik (dict)</li>
+						<li class="fragment">musi posiadać
+							<ul>
+								<li class="fragment">REQUEST_METHOD</li>
+								<li class="fragment">SCRIPT_NAME</li>
+								<li class="fragment">PATH_INFO</li>
+								<li class="fragment">QUERY_STRING</li>
+								<li class="fragment">CONTENT_TYPE</li>
+								<li class="fragment">CONTENT_LENGTH</li>
+								<li class="fragment">SERVER_NAME</li>
+								<li class="fragment">SERVER_PORT</li>
+								<li class="fragment">SERVER_PROTOCOL</li>
+								<li class="fragment">HTTP_*</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>start_response</h2>
+					<ul>
+						<li class="fragment">jest wykonywalna (callable)</li>
+						<li class="fragment">tutaj też argumenty tylko pozycyjne</li>
+						<li class="fragment">przyjmuje 2-3 argumenty
+							<ul>
+								<li class="fragment">status odpowiedzi jako ciąg znaków (200 OK)</li>
+								<li class="fragment">nagłówki odpowiedzi jako lista krotek</li>
+								<li class="fragment">opcjonalnie krokta - wynik <span class="code">sys.exc_info()</span></li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Jak działa aplikacja</h2>
+					<ul>
+						<li class="fragment">wykonuje drugi argument (start_response) z odpowiednimi argumentami</li>
+						<li class="fragment">zwraca iterarable</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>WSGI</h2>
+					<ul>
+						<li class="fragment">serwer może być jednocześnie aplikacją...</li>
+						<li class="fragment">...a aplikacja serwerem</li>
+						<li class="fragment">middleware</li>
+					</ul>
+				</section>
+
+				<section>
+					<section>
+						<h1>Flask</h1>
+					</section>
+
+					<section>
+						<h2>To jest Armin</h2>
+						<img class="plain" src="assets/armin.png" />
+					</section>
+
+					<section>
+						<p>On the first of April 2010, I released a joke microframework called denied which made fun of the fact that all microframeworks at the time decided to forgo with dependencies and bundle up everything they need in a single Python file.</p>
+
+						<p class="fragment">One month later there was a new project by the name of "Flask" which actually gave this concept a real shot.</p>
+
+						<p class="fragment"><small><a href="https://www.palletsprojects.com/blog/hello/">https://www.palletsprojects.com/blog/hello/</a></small></p>
+					</section>
+				</section>
 			</div>
 		</div>
 
