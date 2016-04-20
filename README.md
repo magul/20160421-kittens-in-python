@@ -1,7 +1,7 @@
 Kittens in Python
 ====
 
-Talk presented 21st March 2016 on AKAICamp #10: Backend Frameworks
+Talk presented 21st March 2016 on AKAICamp #10: Backend Frameworks (in Polish).
 
 Presentation is licensed under [CC-BY-SA-3.0-PL](http://creativecommons.org/licenses/by-sa/3.0/pl/legalcode).
 
