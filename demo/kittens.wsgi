@@ -13,13 +13,25 @@ def black_white_kitten(environ, start_response):
 
 
 def color_kitten(environ, start_response):
-    """Kitten in colour"""
+    """Kitten in color"""
     status = '200 OK'
-    response_header = [('Content-type', 'text/html')]
+    response_headers = [('Content-type', 'text/html')]
+    start_response(status, response_headers)
+    output = ['<pre style="font: 10px/5px monospace;">']
+    with open('kitten.color') as f:
+        for line in black_white_kitten(environ, lambda x, y: None):
+            for c in line:
+                if c == '\n':
+                    output.append('\n')
+                    continue
+                output.append(
+                    '<span style="color: #{};">{}</span>'.format(
+                        f.readline()[:-1],
+                        c))
+        output.append('</pre>')
+        return output
 
 
-
-application = choice((blac_white_kitten, color_kitten))
-
-if __name__ == '__main__':
-    print application({}, lambda a,b: None)
+def application(environ, start_response):
+    app = choice((black_white_kitten, color_kitten))
+    return app(environ, start_response)
