@@ -205,6 +205,108 @@ def simple_app(environ, start_response):
 					<h2>zróbmy to!</h2>
 					<img class="plain" src="assets/kitten.jpg" height="500" />
 				</section>
+
+				<section>
+					<h2>czarno-biały kotek</h2>
+					<pre><code class="hljs" data-trim contenteditable>
+def black_white_kitten(environ, start_response):
+    """Kitten in black and white"""
+    status = '200 OK'
+    response_headers = [('Content-type', 'text/plain')]
+    start_response(status, response_headers)
+    with open('kitten.data') as f:
+        return f.readlines()
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>kolorowy kotek</h2>
+					<pre><code class="hljs" data-trim contenteditable>
+def color_kitten(environ, start_response):
+    """Kitten in color"""
+    status = '200 OK'
+    response_headers = [('Content-type', 'text/html')]
+    start_response(status, response_headers)
+    output = ['<pre style="font: 10px/5px monospace;">']
+    with open('kitten.color') as f:
+        for line in black_white_kitten(environ, lambda x, y: None):
+            for c in line:
+                if c == '\n':
+                    output.append('\n')
+                    continue
+                output.append(
+                    '<span style="color: #{};">{}</span>'.format(
+                        f.readline()[:-1],
+                        c))
+        output.append('</pre>')
+        return output
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>losowanie kotka</h2>
+					<pre><code class="hljs" data-trim contenteditable>
+from random import choice
+
+def application(environ, start_response):
+    app = choice((black_white_kitten, color_kitten))
+    return app(environ, start_response)
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>konfiguracja serwera</h2>
+					<pre><code class="hljs" data-trim contenteditable>
+<VirtualHost *:80>
+	DocumentRoot /var/www/html
+
+	WSGIScriptAlias / /var/www/html/kittens.wsgi
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>sprawdź to sam</h2>
+					<pre><code class="hljs" data-trim contenteditable>
+FROM ubuntu
+
+RUN apt-get update
+RUN apt-get upgrade -y
+RUN apt-get install -y apache2 python-setuptools libapache2-mod-wsgi
+
+WORKDIR /etc/apache2/sites-available
+ADD 000-default.conf .
+
+WORKDIR /var/www/html
+ADD kittens.wsgi .
+ADD kitten.data .
+ADD kitten.color .
+
+RUN service apache2 restart
+					</code></pre>
+				</section>
+
+				<section>
+					<h1>Pytania?</h1>
+				</section>
+
+				<section>
+					<h2><a href="http://picascii.com/">http://picascii.com/</a></h2>
+					<h2><a href="https://placekitten.com/">https://placekitten.com/</a></h2>
+				</section>
+
+				<section data-background="#ffffff">
+					<img height="500" class="plain" src="assets/kdp.png" />
+				</section>
+
+				<section>
+					<h1>Tomasz Magulski</h1>
+					<h3><a href="http://magul.ski/kittens-in-python">http://magul.ski/kittens-in-python</a></h3>
+					<h3><a href="https://github.com/magul">https://github.com/magul</a></h3>
+				</section>
 			</div>
 		</div>
 
