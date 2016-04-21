@@ -9,5 +9,6 @@ ADD 000-default.conf .
 
 WORKDIR /var/www/html
 ADD kittens.wsgi .
+ADD kitten.data .
 
 RUN service apache2 restart
